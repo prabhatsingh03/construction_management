@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BuildPro - Construction Management</title>
+    
+    <!-- External Libraries from CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <!-- Inter Font -->
+    <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
+    
+    <style>
+        /* Apply Inter font family */
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+    </style>
+</head>
+<body>
+    <!-- The root element where the React application will be mounted -->
+    <div id="root"></div>
+
+    <!-- Load React Component Scripts -->
+    <!-- These scripts are compiled in the browser by Babel -->
+    <script type="text/babel" src="/static/js/LoginForm.js"></script>
+    <script type="text/babel" src="/static/js/Sidebar.js"></script>
+    <script type="text/babel" src="/static/js/DashboardView.js"></script>
+    <script type="text/babel" src="/static/js/ProjectsView.js"></script>
+    <script type="text/babel" src="/static/js/ProjectDetailView.js"></script>
+    <script type="text/babel" src="/static/js/CrudView.js"></script>
+    
+    <!-- Main App Entry Point -->
+    <!-- This script must be last as it uses the components defined above -->
+    <script type="text/babel" src="/static/js/App.js"></script>
+</body>
+</html>
