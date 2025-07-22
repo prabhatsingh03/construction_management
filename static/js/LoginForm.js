@@ -31,8 +31,8 @@ function LoginForm({ onLogin }) {
 
         // Define the endpoint relative to the base URL in App.js
         const endpoint = isSignUp 
-            ? `/register` 
-            : `/login`;
+            ? `register` 
+            : `login`;
             
         const payload = isSignUp 
             ? { email, password, full_name: fullName } 

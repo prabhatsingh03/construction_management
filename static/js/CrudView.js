@@ -47,12 +47,12 @@ function CrudView({ title, endpoint, fields, projects }) {
             let response;
             if (editingItem) {
                 // If editing, send a PUT request.
-                response = await api.put(`/${endpoint}/${editingItem.id}`, formData);
+                response = await api.put(`${endpoint}/${editingItem.id}`, formData);
                 // Update the item in the local state.
                 setData(prev => prev.map(item => item.id === editingItem.id ? response.data : item));
             } else {
                 // If creating, send a POST request.
-                response = await api.post(`/${endpoint}`, formData);
+                response = await api.post(endpoint, formData);
                 // Add the new item to the local state.
                 setData(prev => [response.data, ...prev]);
             }
@@ -67,7 +67,7 @@ function CrudView({ title, endpoint, fields, projects }) {
     const handleDelete = async (itemId) => {
         if (confirm('Are you sure you want to delete this item?')) {
             try {
-                await api.delete(`/${endpoint}/${itemId}`);
+                await api.delete(`${endpoint}/${itemId}`);
                 // Remove the item from the local state.
                 setData(prev => prev.filter(item => item.id !== itemId));
             } catch (err) {

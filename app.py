@@ -1,5 +1,5 @@
 import os
-from flask import Flask, render_template
+from flask import Flask, render_template, jsonify
 from flask_cors import CORS
 from flask_jwt_extended import JWTManager
 from models import db, bcrypt
@@ -26,11 +26,27 @@ app.config["JWT_TOKEN_LOCATION"] = ["headers"]
 app.config["JWT_HEADER_NAME"] = "Authorization"
 app.config["JWT_HEADER_TYPE"] = "Bearer"
 
+# Add error handling for JWT
+app.config["JWT_ACCESS_TOKEN_EXPIRES"] = False
+
 
 # --- Initialize Extensions ---
 db.init_app(app)
 bcrypt.init_app(app)
 jwt = JWTManager(app)
+
+# --- JWT Error Handlers ---
+@jwt.expired_token_loader
+def expired_token_callback(jwt_header, jwt_payload):
+    return jsonify({"error": "Token has expired"}), 401
+
+@jwt.invalid_token_loader
+def invalid_token_callback(error):
+    return jsonify({"error": "Invalid token"}), 401
+
+@jwt.unauthorized_loader
+def missing_token_callback(error):
+    return jsonify({"error": "Authorization token is required"}), 401
 
 
 # --- Register Blueprints ---

@@ -33,12 +33,21 @@ function useData(endpoint) {
         const fetchData = async () => {
             try {
                 setLoading(true);
-                const response = await api.get(`/${endpoint}`);
+                const response = await api.get(endpoint);
                 setData(response.data);
                 setError(null);
             } catch (err) {
-                setError(`Failed to fetch ${endpoint}. Your session may have expired.`);
-                console.error(err);
+                console.error(`Error fetching ${endpoint}:`, err);
+                if (err.response?.status === 401) {
+                    setError(`Authentication failed. Please log in again.`);
+                    // Clear the token if it's invalid
+                    localStorage.removeItem('authToken');
+                    window.location.reload();
+                } else if (err.response?.status === 422) {
+                    setError(`Invalid request format for ${endpoint}.`);
+                } else {
+                    setError(`Failed to fetch ${endpoint}. ${err.response?.data?.error || 'Please try again.'}`);
+                }
             } finally {
                 setLoading(false);
             }
