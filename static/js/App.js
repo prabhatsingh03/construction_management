@@ -15,6 +15,8 @@ api.interceptors.request.use(config => {
     return config;
 });
 
+
+
 // --- Reusable Data Fetching Hook ---
 // A custom hook to simplify fetching data from an endpoint.
 // It handles loading and error states automatically.
@@ -39,10 +41,7 @@ function useData(endpoint) {
             } catch (err) {
                 console.error(`Error fetching ${endpoint}:`, err);
                 if (err.response?.status === 401) {
-                    setError(`Authentication failed. Please log in again.`);
-                    // Clear the token if it's invalid
-                    localStorage.removeItem('authToken');
-                    window.location.reload();
+                    setError(`Authentication failed. Your session may have expired.`);
                 } else if (err.response?.status === 422) {
                     setError(`Invalid request format for ${endpoint}.`);
                 } else {
