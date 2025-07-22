@@ -63,10 +63,10 @@ function ProjectsView({ projects: initialProjects, loading, error, setProjects, 
         e.preventDefault();
         try {
             if (editingProject) {
-                const response = await api.put(`/projects/${editingProject.id}`, projectFormData);
+                const response = await api.put(`projects/${editingProject.id}`, projectFormData);
                 setProjects(prev => prev.map(p => p.id === editingProject.id ? response.data : p));
             } else {
-                const response = await api.post('/projects', projectFormData);
+                const response = await api.post('projects', projectFormData);
                 setProjects(prev => [response.data, ...prev]);
             }
             setShowForm(false);
@@ -79,7 +79,7 @@ function ProjectsView({ projects: initialProjects, loading, error, setProjects, 
     const handleDeleteProject = async (projectId) => {
         if (confirm('Are you sure you want to delete this project? This action cannot be undone.')) {
             try {
-                await api.delete(`/projects/${projectId}`);
+                await api.delete(`projects/${projectId}`);
                 setProjects(prev => prev.filter(p => p.id !== projectId));
             } catch (err) {
                 console.error("Failed to delete project:", err);
