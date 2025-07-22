@@ -50,8 +50,8 @@ def login():
     user = Profile.query.filter_by(email=email).first()
 
     if user and user.check_password(password):
-        # Create a token with the user's ID and role
-        access_token = create_access_token(identity={'id': user.id, 'role': user.role})
+        # Create a token with the user's ID (identity must be a string/number)
+        access_token = create_access_token(identity=user.id)
         return jsonify(access_token=access_token, user={'id': user.id, 'fullName': user.full_name, 'email': user.email, 'role': user.role}), 200
     
     return jsonify({"error": "Invalid email or password"}), 401
@@ -127,7 +127,7 @@ def create_document():
     data = request.get_json()
     if not data or not data.get('name') or not data.get('project_id'):
         return jsonify({"error": "Missing required fields"}), 400
-    new_doc = Document(name=data['name'], project_id=data['project_id'], type=data.get('type'), uploaded_by=get_jwt_identity()['id'])
+    new_doc = Document(name=data['name'], project_id=data['project_id'], type=data.get('type'), uploaded_by=get_jwt_identity())
     db.session.add(new_doc)
     db.session.commit()
     return jsonify({'id': new_doc.id, 'name': new_doc.name, 'type': new_doc.type, 'project_id': new_doc.project_id}), 201
@@ -164,7 +164,7 @@ def create_bid():
     data = request.get_json()
     if not data or not data.get('title') or not data.get('project_id'):
         return jsonify({"error": "Missing required fields"}), 400
-    new_bid = Bid(title=data['title'], project_id=data['project_id'], status=data.get('status'), amount=data.get('amount'), created_by=get_jwt_identity()['id'])
+    new_bid = Bid(title=data['title'], project_id=data['project_id'], status=data.get('status'), amount=data.get('amount'), created_by=get_jwt_identity())
     db.session.add(new_bid)
     db.session.commit()
     return jsonify({'id': new_bid.id, 'title': new_bid.title, 'status': new_bid.status, 'amount': float(new_bid.amount or 0), 'project_id': new_bid.project_id}), 201
@@ -202,7 +202,7 @@ def create_inspection():
     data = request.get_json()
     if not data or not data.get('title') or not data.get('project_id'):
         return jsonify({"error": "Missing required fields"}), 400
-    new_inspection = Inspection(title=data['title'], project_id=data['project_id'], status=data.get('status'), notes=data.get('notes'), inspector_id=get_jwt_identity()['id'])
+    new_inspection = Inspection(title=data['title'], project_id=data['project_id'], status=data.get('status'), notes=data.get('notes'), inspector_id=get_jwt_identity())
     db.session.add(new_inspection)
     db.session.commit()
     return jsonify({'id': new_inspection.id, 'title': new_inspection.title, 'status': new_inspection.status, 'project_id': new_inspection.project_id}), 201
@@ -240,7 +240,7 @@ def create_change_order():
     data = request.get_json()
     if not data or not data.get('title') or not data.get('project_id') or not data.get('amount'):
         return jsonify({"error": "Missing required fields"}), 400
-    new_order = ChangeOrder(title=data['title'], project_id=data['project_id'], amount=data['amount'], status=data.get('status'), submitted_by=get_jwt_identity()['id'])
+    new_order = ChangeOrder(title=data['title'], project_id=data['project_id'], amount=data['amount'], status=data.get('status'), submitted_by=get_jwt_identity())
     db.session.add(new_order)
     db.session.commit()
     return jsonify({'id': new_order.id, 'title': new_order.title, 'status': new_order.status, 'amount': float(new_order.amount), 'project_id': new_order.project_id}), 201
